@@ -87,7 +87,7 @@ public class MapHandler : MonoBehaviour
 		
 		for (int i=0; i<transform.childCount; i++) {
 			Level firstTube = transform.GetChild(i).GetComponent<Level>();
-			SetTrash(firstTube, i);
+			firstTube.Respawn(levelInfoList[i]["hasTrash"]);
 		}
 		
 		// Set Trash Count to GameManager
@@ -120,50 +120,46 @@ public class MapHandler : MonoBehaviour
 	{
 		float depth = (float)currentLevelIndex;
 		
-		currentFog = fog - 
-			new Color((depth/totalLevelCount/2), (depth/totalLevelCount/2), 
-				(depth/totalLevelCount/2),0);
+		if (depth/totalLevelCount <= 1.5f) {
+			currentFog = fog - 
+				new Color((depth/totalLevelCount/2), (depth/totalLevelCount/2), 
+					(depth/totalLevelCount/2),0);
+		}
 		RenderSettings.fogColor = 
-			Color.Lerp(RenderSettings.fogColor, currentFog, Time.deltaTime*0.4f);
+			Color.Lerp(RenderSettings.fogColor, currentFog, Time.deltaTime*0.5f);
 	}
 	
 	protected virtual void FixedUpdate()
 	{
 		foreach (Level tube in tubeQueue) {
 			tube.transform.position = 
-				tube.transform.position + new Vector3(0,0.025f*speed,0);
+				tube.transform.position + new Vector3(0,Mathf.Min(0.025f*speed, 100),0);
 		}
+		
 		if (tubeQueue.Count > 0 && tubeQueue.Peek().transform.position.y >= 10f) {
-			if (currentLevelCount <= totalLevelCount + startLevelCount) {
-				Level firstTube = tubeQueue.Dequeue();
+			Level firstTube = tubeQueue.Dequeue();
+			if (currentLevelIndex <= totalLevelCount) {	
 				tubeQueue.Enqueue(firstTube);
 				firstTube.transform.position = 
 					new Vector3(0,(tubeQueue.Count*-10f)+10f,0);
-				firstTube.transform.eulerAngles = 
-					new Vector3(0,Random.Range(0f,360f),0);
-				SetTrash(firstTube, (currentLevelCount+1));
+				firstTube.Respawn(levelInfoList[currentLevelCount+1]["hasTrash"]);
 				currentLevelCount++;
+			}
+			else {
+				firstTube.transform.position = new Vector3(0,100,0);
 			}
 			currentLevelIndex = (currentLevelIndex < 999) ? 
 				currentLevelIndex + 1 : 999;
-			if (changeSpeedMap.ContainsKey(currentLevelIndex)) {
-				speed = changeSpeedMap[currentLevelIndex];
-				if (dialogueHandler != null && speed > 0) {
-					dialogueHandler.AddDialogue(
-						"Something pulls you in further...", 3f, true);
-				}
-			}
+			
 		}
-	}
-	
-	protected virtual void SetTrash(Level tube, int index)
-	{
-		if (tube != null && tube.trash != null && index < levelInfoList.Count) {
-			tube.trash.gameObject.SetActive(
-				levelInfoList[index]["hasTrash"]);
-			tube.trash.collected = false;
-			tube.trash.transform.localPosition = 
-				new Vector3(0,0,Random.Range(0.5f,3f));
+			
+		if (changeSpeedMap.ContainsKey(currentLevelIndex)) {
+			float lastSpeed = speed;
+			speed = changeSpeedMap[currentLevelIndex];
+			if (dialogueHandler != null && speed > lastSpeed) {
+				dialogueHandler.AddDialogue(
+					"Something pulls you in further...", 3f, true);
+			}
 		}
 	}
 }

@@ -12,6 +12,8 @@ public class Trash : MonoBehaviour
 	
 	public bool collected = false;
 	
+	public List<GameObject> trashModelRandomList;
+	
 	
 	protected virtual void Awake()
 	{
@@ -27,6 +29,18 @@ public class Trash : MonoBehaviour
 		}
 		
 		collected = false;
+		
+		if (trashModelRandomList.Count > 0) {
+			for (int i=0; i<trashModelRandomList.Count; i++) {
+				trashModelRandomList[i].SetActive(false);
+			}
+			
+			GameObject randomModel = 
+				trashModelRandomList[Random.Range(0,trashModelRandomList.Count)];
+			if (randomModel != null) {
+				randomModel.SetActive(true);
+			}
+		}
 	}
 	
     protected virtual void OnTriggerEnter(Collider collision)

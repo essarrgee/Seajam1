@@ -13,7 +13,10 @@ public class Player : MonoBehaviour
 	
 	public bool lockInput = false;
 	
+	protected Transform cameraObject;
+	protected Animator cameraAnimator;
 	protected Transform model;
+	
 	protected float stunTime;
 	
 	
@@ -25,6 +28,10 @@ public class Player : MonoBehaviour
 		moveDirection = new Vector2(0,0);
 		
 		model = transform.Find("Model");
+		cameraObject = transform.Find("CameraHandler");
+		if (cameraObject != null) {
+			cameraAnimator = cameraObject.GetComponent<Animator>();
+		}
 		
 		stunTime = 0f;
 	}
@@ -73,6 +80,9 @@ public class Player : MonoBehaviour
 	{
 		if (stunTime <= 0) {
 			stunTime = 2f;
+			if (cameraAnimator != null) {
+				cameraAnimator.SetTrigger("Damage");
+			}
 		}
 	}
 }

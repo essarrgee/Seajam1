@@ -45,7 +45,12 @@ public class DialogueHandler : MonoBehaviour
 		if (overrideAllText) {
 			dialogueQueue.Clear();
 		}
-		dialogueTimingMap.Add(text, timing);
+		if (!dialogueTimingMap.ContainsKey(text)) {
+			dialogueTimingMap.Add(text, timing);
+		}
+		else {
+			dialogueTimingMap[text] = timing;
+		}
 		// dialogueColorMap.Add(text, color);
 		dialogueQueue.Enqueue(text);
 	}
