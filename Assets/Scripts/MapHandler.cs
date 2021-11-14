@@ -69,7 +69,7 @@ public class MapHandler : MonoBehaviour
 		
 		for (int i=0; i<chunkCount; i++) {
 			int startIndex = levelsPerChunk*i;
-			int trashCount = Random.Range(3,5);
+			int trashCount = Random.Range(2,5);
 			List<int> chunkIndexRange = new List<int>();
 			for (int o=startIndex; o<startIndex+levelsPerChunk; o++) {
 				chunkIndexRange.Add(o);
@@ -87,7 +87,8 @@ public class MapHandler : MonoBehaviour
 		
 		for (int i=0; i<transform.childCount; i++) {
 			Level firstTube = transform.GetChild(i).GetComponent<Level>();
-			firstTube.Respawn(levelInfoList[i]["hasTrash"]);
+			firstTube.Respawn(levelInfoList[i]["hasTrash"],
+				currentLevelIndex, totalLevelCount);
 		}
 		
 		// Set Trash Count to GameManager
@@ -138,16 +139,26 @@ public class MapHandler : MonoBehaviour
 		
 		if (tubeQueue.Count > 0 && tubeQueue.Peek().transform.position.y >= 10f) {
 			Level firstTube = tubeQueue.Dequeue();
-			if (currentLevelIndex <= totalLevelCount) {	
+			//if (currentLevelIndex <= totalLevelCount + 50) {	
 				tubeQueue.Enqueue(firstTube);
 				firstTube.transform.position = 
 					new Vector3(0,(tubeQueue.Count*-10f)+10f,0);
-				firstTube.Respawn(levelInfoList[currentLevelCount+1]["hasTrash"]);
+				if (currentLevelCount > totalLevelCount + 15) {
+					firstTube.gameObject.SetActive(false);
+				}
+				if ((currentLevelCount+1) < levelInfoList.Count) {
+					firstTube.Respawn(
+						levelInfoList[currentLevelCount+1]["hasTrash"], 
+						currentLevelIndex, totalLevelCount);
+				}
+				else {
+					firstTube.Respawn(false, currentLevelIndex, totalLevelCount);
+				}
 				currentLevelCount++;
-			}
-			else {
-				firstTube.transform.position = new Vector3(0,100,0);
-			}
+			//}
+			//else {
+			//	firstTube.transform.position = new Vector3(0,100,0);
+			//}
 			currentLevelIndex = (currentLevelIndex < 999) ? 
 				currentLevelIndex + 1 : 999;
 			

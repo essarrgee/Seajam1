@@ -10,24 +10,100 @@ public class Level : MonoBehaviour
 	public List<Transform> hazardListLevel2;
 	public List<Transform> hazardListLevel3;
 	public List<Transform> hazardListLevel4;
+	public List<Transform> hazardListLevel5;
 	
-	protected List<float> hazardSpawnAngleList;
+	protected List<Transform> hazardAllList; // All transform.GetChild() instances
+	protected List<List<Transform>> hazardCollectiveList;
+	protected List<int> hazardSpawnAngleList;
 	
-	public virtual void Respawn(bool hasTrash)
+	protected virtual void Awake()
+	{
+		hazardAllList = new List<Transform>();
+		for (int i=0; i<transform.Find("Hitbox").childCount; i++) {
+			hazardAllList.Add(transform.Find("Hitbox").GetChild(i));
+		}
+		hazardCollectiveList = new List<List<Transform>>();
+		hazardCollectiveList.Add(hazardListLevel1);
+		hazardCollectiveList.Add(hazardListLevel2);
+		hazardCollectiveList.Add(hazardListLevel3);
+		hazardCollectiveList.Add(hazardListLevel4);
+		hazardCollectiveList.Add(hazardListLevel5);
+	}
+	
+	public virtual void Respawn(bool hasTrash, int currentLevelIndex, int totalLevelCount)
 	{	
+		
+		int spawnAngle = Random.Range(0,36)*10;
+		transform.eulerAngles = new Vector3(0,spawnAngle,0);
+		
+		float levelRatio = (float)(currentLevelIndex)/(float)(totalLevelCount);
+		GenerateHazards(spawnAngle, hasTrash, levelRatio);
+			
 		if (trash != null) {
-			int spawnAngle = Random.Range(0,360)
-			firstTube.transform.eulerAngles = 
-					new Vector3(0,spawnAngle,0);
-			
-			hazardSpawnAngleList = new List<float>();
-			// Generate list of angles hazards can spawn in
-			// Remove angle that level spawn in
-			
-			gameObject.SetActive(hasTrash);
+			trash.gameObject.SetActive(hasTrash);
 			trash.collected = false;
-			transform.localPosition = 
+			trash.transform.localPosition = 
 				new Vector3(0,0,Random.Range(0.5f,3f));
 		}
+	}
+	
+	protected virtual void GenerateHazards(int spawnAngle, bool hasTrash, 
+	float levelRatio)
+	{
+		// Initialize all child hazards
+		for (int i=0; i<hazardAllList.Count; i++) {
+			hazardAllList[i].gameObject.SetActive(false);
+		}
+		
+		// Generate list of angles hazards can spawn in
+		// Remove angle and adjacent angles that level spawn in
+		hazardSpawnAngleList = new List<int>();
+		for (int i=0; i<36; i++) {
+			hazardSpawnAngleList.Add(i*10);
+		}
+		if (hasTrash) {
+			hazardSpawnAngleList.RemoveAt(spawnAngle/10);
+			if (spawnAngle/10 < hazardSpawnAngleList.Count) {
+				hazardSpawnAngleList.RemoveAt(spawnAngle/10);
+			}
+			else {
+				hazardSpawnAngleList.RemoveAt(0);
+			}
+			if ((spawnAngle-1)/10 < hazardSpawnAngleList.Count) {
+				hazardSpawnAngleList.RemoveAt((spawnAngle-1)/10);
+			}
+			else {
+				hazardSpawnAngleList.RemoveAt(hazardSpawnAngleList.Count-1);
+			}
+		}
+		
+		int level = (int)Mathf.Floor(levelRatio*hazardCollectiveList.Count);
+		if (level < hazardCollectiveList.Count) {
+			List<Transform> currentHazardList = hazardCollectiveList[level];
+			if (currentHazardList != null) {
+				float previousYPosition = 0;
+				
+				for (int i=0; i<currentHazardList.Count; i++) {
+					
+					bool willSpawn = Random.Range(0,20) <= 12 ? true : false;
+					currentHazardList[i].gameObject.SetActive(willSpawn);
+					
+					if (willSpawn) {
+						bool sameYPosition = Random.Range(0,18) <= 11 ? true : false;
+						int angleIndex = Random.Range(0, hazardSpawnAngleList.Count);
+						float yPosition = sameYPosition ? previousYPosition : 
+							Random.Range(-4f,4f);
+						currentHazardList[i].localEulerAngles = 
+							new Vector3(0,hazardSpawnAngleList[angleIndex],0);
+						currentHazardList[i].localPosition = new Vector3(0,yPosition,0);
+						hazardSpawnAngleList.RemoveAt(angleIndex);
+						previousYPosition = yPosition;
+					}
+					
+				}
+				
+			}
+		}
+		
 	}
 }

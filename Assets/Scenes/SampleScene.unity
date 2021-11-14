@@ -738,18 +738,18 @@ MonoBehaviour:
   currentLevelIndex: 1
   totalLevelCount: 100
   changeSpeedList:
-  - {x: 4, y: 2}
-  - {x: 10, y: 3}
-  - {x: 18, y: 4}
-  - {x: 28, y: 5}
-  - {x: 40, y: 6}
-  - {x: 60, y: 7}
+  - {x: 4, y: 20}
+  - {x: 10, y: 20.5}
+  - {x: 18, y: 30}
+  - {x: 28, y: 40}
+  - {x: 40, y: 50}
+  - {x: 60, y: 60}
   - {x: 100, y: 10}
-  - {x: 140, y: 8}
-  - {x: 145, y: 5}
-  - {x: 148, y: 3}
-  - {x: 149, y: 1}
-  - {x: 150, y: 0}
+  - {x: 108, y: 8}
+  - {x: 113, y: 5}
+  - {x: 114, y: 3}
+  - {x: 115, y: 2}
+  - {x: 117, y: 0}
 --- !u!1001 &520186611
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1589,7 +1589,7 @@ RectTransform:
   m_GameObject: {fileID: 970630355}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 299273145}
   m_RootOrder: 3
@@ -1619,10 +1619,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Something pulls you in further...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e9978cb59729fa46a4749f9a237a20f, type: 2}
+  m_sharedMaterial: {fileID: -9214583129031991148, guid: 8e9978cb59729fa46a4749f9a237a20f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2013,8 +2013,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0.4
   lockInput: 0
---- !u!136 &1560291912
-CapsuleCollider:
+--- !u!65 &1560291912
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2023,9 +2023,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 0.4
-  m_Direction: 1
+  serializedVersion: 2
+  m_Size: {x: 0.4, y: 0.05, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1560291913
 Transform:
@@ -3504,7 +3503,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 5
       minScalar: 10
       maxCurve:
         serializedVersion: 2
