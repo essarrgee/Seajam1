@@ -11,6 +11,7 @@ public class Level : MonoBehaviour
 	public List<Transform> hazardListLevel3;
 	public List<Transform> hazardListLevel4;
 	public List<Transform> hazardListLevel5;
+	public List<Transform> hazardListLevel6;
 	
 	protected List<Transform> hazardAllList; // All transform.GetChild() instances
 	protected List<List<Transform>> hazardCollectiveList;
@@ -28,6 +29,7 @@ public class Level : MonoBehaviour
 		hazardCollectiveList.Add(hazardListLevel3);
 		hazardCollectiveList.Add(hazardListLevel4);
 		hazardCollectiveList.Add(hazardListLevel5);
+		hazardCollectiveList.Add(hazardListLevel6);
 	}
 	
 	public virtual void Respawn(bool hasTrash, int currentLevelIndex, int totalLevelCount)
@@ -59,21 +61,8 @@ public class Level : MonoBehaviour
 		// Remove angle and adjacent angles that level spawn in
 		hazardSpawnAngleList = new List<int>();
 		for (int i=0; i<36; i++) {
-			hazardSpawnAngleList.Add(i*10);
-		}
-		if (hasTrash) {
-			hazardSpawnAngleList.RemoveAt(spawnAngle/10);
-			if (spawnAngle/10 < hazardSpawnAngleList.Count) {
-				hazardSpawnAngleList.RemoveAt(spawnAngle/10);
-			}
-			else {
-				hazardSpawnAngleList.RemoveAt(0);
-			}
-			if ((spawnAngle-1)/10 < hazardSpawnAngleList.Count) {
-				hazardSpawnAngleList.RemoveAt((spawnAngle-1)/10);
-			}
-			else {
-				hazardSpawnAngleList.RemoveAt(hazardSpawnAngleList.Count-1);
+			if (spawnAngle != i*10) {
+				hazardSpawnAngleList.Add(i*10);
 			}
 		}
 		
