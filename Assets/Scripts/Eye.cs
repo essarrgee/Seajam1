@@ -5,6 +5,9 @@ using UnityEngine;
 public class Eye : MonoBehaviour
 {
 	public Transform model;
+	
+	public float openRange = 13f;
+	
 	protected Animator animator;
 	
 	protected GameObject playerObject;
@@ -32,7 +35,7 @@ public class Eye : MonoBehaviour
 	protected virtual void Update()
 	{
 		if (playerObject != null && animator != null && !opened && model != null &&
-		(playerObject.transform.position - model.position).magnitude <= 10f
+		(playerObject.transform.position - model.position).magnitude <= openRange
 		&& gameObject.activeSelf) {
 			opened = true;
 			animator.SetTrigger("Open");

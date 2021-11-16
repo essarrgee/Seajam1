@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MapHandler : MonoBehaviour
 {
+	public Transform endCreature;
+	
 	public float speed = 1f;
 	[Tooltip("Read Only, defaults to # of children in transform")]
 	public int currentLevelCount = 0;
@@ -27,11 +29,19 @@ public class MapHandler : MonoBehaviour
 	protected GameObject dialogueHandlerObject;
 	protected DialogueHandler dialogueHandler;
 	
+	protected bool ended;
 	
 	protected virtual void Awake()
 	{
+		ended = false;
+		
 		fog = RenderSettings.fogColor;
 		currentFog = fog;
+		
+		// End Creature
+		if (endCreature != null) {
+			endCreature.position = new Vector3(0,-100,0);
+		}
 		
 		// Set up Tubes
 		tubeQueue = new Queue<Level>();
@@ -72,7 +82,9 @@ public class MapHandler : MonoBehaviour
 			int trashCount = Random.Range(2,5);
 			List<int> chunkIndexRange = new List<int>();
 			for (int o=startIndex; o<startIndex+levelsPerChunk; o++) {
-				chunkIndexRange.Add(o);
+				if (o > 1) { // Discludes first two levels at the very start
+					chunkIndexRange.Add(o);
+				}
 			}
 			// List<int> chunkIndexListWithTrash = new List<int>
 			for (int o=0; o<trashCount; o++) {
@@ -88,7 +100,7 @@ public class MapHandler : MonoBehaviour
 		for (int i=0; i<transform.childCount; i++) {
 			Level firstTube = transform.GetChild(i).GetComponent<Level>();
 			firstTube.Respawn(levelInfoList[i]["hasTrash"],
-				currentLevelIndex, totalLevelCount);
+				i, totalLevelCount);
 		}
 		
 		// Set Trash Count to GameManager
@@ -120,6 +132,10 @@ public class MapHandler : MonoBehaviour
 	protected virtual void Update()
 	{
 		float depth = (float)currentLevelIndex;
+		float density = 0.07f;
+		if (endCreature != null) {
+			density = 0.07f*(endCreature.position.y/-100);
+		}
 		
 		if (depth/totalLevelCount <= 1.5f) {
 			currentFog = fog - 
@@ -128,6 +144,7 @@ public class MapHandler : MonoBehaviour
 		}
 		RenderSettings.fogColor = 
 			Color.Lerp(RenderSettings.fogColor, currentFog, Time.deltaTime*0.5f);
+		RenderSettings.fogDensity = density;
 	}
 	
 	protected virtual void FixedUpdate()
@@ -143,9 +160,9 @@ public class MapHandler : MonoBehaviour
 				tubeQueue.Enqueue(firstTube);
 				firstTube.transform.position = 
 					new Vector3(0,(tubeQueue.Count*-10f)+10f,0);
-				if (currentLevelCount > totalLevelCount + 15) {
-					firstTube.gameObject.SetActive(false);
-				}
+				//if (currentLevelCount > totalLevelCount + 15) {
+				firstTube.gameObject.SetActive(currentLevelCount <= totalLevelCount + 15);
+				//}
 				if ((currentLevelCount+1) < levelInfoList.Count) {
 					firstTube.Respawn(
 						levelInfoList[currentLevelCount+1]["hasTrash"], 
@@ -171,6 +188,14 @@ public class MapHandler : MonoBehaviour
 				dialogueHandler.AddDialogue(
 					"Something pulls you in further...", 3f, true);
 			}
+		}
+		
+		if (!ended && currentLevelIndex >= totalLevelCount + 15) {
+			ended = true;
+		}
+		if (ended && endCreature != null && endCreature.position.y <= -30f) {
+			endCreature.position = 
+				endCreature.position + new Vector3(0,0.1f,0);
 		}
 	}
 }
