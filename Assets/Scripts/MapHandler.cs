@@ -205,12 +205,14 @@ public class MapHandler : MonoBehaviour
 					dialogueHandler.AddDialogue(
 						"", 2f, true);
 					dialogueHandler.AddDialogue(
-						"Human! Thou hast done well.", 4f, false);
+						"Human, you have done well.", 4f, false);
 					dialogueHandler.AddDialogue(
-						"Come, let us merge as one.", 4f, false);
+						"Our ocean has long been polluted by this awful substance.", 4f, false);
 					dialogueHandler.AddDialogue(
-						"Together, we shalt cleanse the ocean of this filth!", 4f, false);
-					gameManager.PlayEndingGood(15);
+						"Let us merge as one.", 4f, false);
+					dialogueHandler.AddDialogue(
+						"Toegther, we will rid the ocean of this filth.", 4f, false);
+					gameManager.PlayEndingGood(19);
 				}
 				else {
 					dialogueHandler.AddDialogue(
@@ -218,9 +220,9 @@ public class MapHandler : MonoBehaviour
 					dialogueHandler.AddDialogue(
 						"Such a disappointment.", 4f, false);
 					dialogueHandler.AddDialogue(
-						"Thou hast failed to cleanse us.", 4f, false);
+						"You have failed to cleanse us.", 4f, false);
 					dialogueHandler.AddDialogue(
-						"Begone, foolish mortal.", 4f, false);
+						"Begone.", 4f, false);
 					gameManager.PlayEndingBad(15);
 				}
 			}

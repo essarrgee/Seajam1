@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 	protected Animator endCutsceneBadAnimator;
 
 	protected int totalTrashCount;
-	protected int trashCollected;
+	public int trashCollected;
 	
     protected virtual void Awake()
 	{
