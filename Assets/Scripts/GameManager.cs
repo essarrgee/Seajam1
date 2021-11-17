@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {	
 	public GameObject endCutsceneGood;
 	public GameObject endCutsceneBad;
+	public Animator trashDisplayAnimator;
+	public TextMeshProUGUI trashDisplay;
 	protected Animator endCutsceneGoodAnimator;
 	protected Animator endCutsceneBadAnimator;
 
+	protected float showTrash;
 	protected int totalTrashCount;
 	public int trashCollected;
 	
     protected virtual void Awake()
 	{
+		showTrash = 5;
 		trashCollected = 0;
 		
 		if (endCutsceneGood != null) {
@@ -25,9 +30,23 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	
+	protected virtual void Update()
+	{
+		showTrash = showTrash > 0 ? showTrash - Time.deltaTime : 0;
+		
+		if (trashDisplayAnimator != null) {
+			trashDisplayAnimator.SetBool("Show", showTrash > 0);
+		}
+		if (trashDisplay != null) {
+			trashDisplay.text = 
+				trashCollected.ToString() + "/" + totalTrashCount.ToString();
+		}
+	}
+	
 	public virtual void CollectTrash()
 	{
 		trashCollected++;
+		showTrash = 3f;
 		// print(trashCollected);
 	}
 	

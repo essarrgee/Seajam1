@@ -816,7 +816,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6665113923730067600, guid: f4bfbd79c517eaa40b59c24263f2890f, type: 3}
       propertyPath: openRange
-      value: 25
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 9080207216902602823, guid: f4bfbd79c517eaa40b59c24263f2890f, type: 3}
       propertyPath: m_RootOrder

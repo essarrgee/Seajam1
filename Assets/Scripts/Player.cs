@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
 	protected Animator cameraAnimator;
 	protected Transform model;
 	
+	public Animator damageVignetteAnimator;
+	
 	protected float stunTime;
 	
 	
@@ -69,7 +71,7 @@ public class Player : MonoBehaviour
 		Vector3 newSpeed = moveDirection.normalized;
 		Vector3 totalSpeed = 
 			new Vector3(newSpeed.x, 0, newSpeed.z)*walkSpeed*
-				(stunTime <= 1f ? 1 : 0);
+				(stunTime <= 0.2f ? 1 : 0);
 		
 		if (rb != null) {
 			rb.AddForce(totalSpeed, ForceMode.Impulse);
@@ -82,6 +84,9 @@ public class Player : MonoBehaviour
 			stunTime = 1.1f;
 			if (cameraAnimator != null) {
 				cameraAnimator.SetTrigger("Damage");
+			}
+			if (damageVignetteAnimator != null) {
+				damageVignetteAnimator.SetTrigger("Damage");
 			}
 		}
 	}

@@ -46,7 +46,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.05, z: 0.25}
+  m_Size: {x: 0.3, y: 0.05, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1886137635551988972
 MonoBehaviour:
@@ -62,6 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 0.4
   lockInput: 0
+  damageVignetteAnimator: {fileID: 0}
 --- !u!54 &1886137635551988961
 Rigidbody:
   m_ObjectHideFlags: 0
