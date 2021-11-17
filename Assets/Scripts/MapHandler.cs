@@ -30,10 +30,12 @@ public class MapHandler : MonoBehaviour
 	protected DialogueHandler dialogueHandler;
 	
 	protected bool ended;
+	protected bool endDialoguePlayed;
 	
 	protected virtual void Awake()
 	{
 		ended = false;
+		endDialoguePlayed = false;
 		
 		fog = RenderSettings.fogColor;
 		currentFog = fog;
@@ -190,12 +192,38 @@ public class MapHandler : MonoBehaviour
 			}
 		}
 		
-		if (!ended && currentLevelIndex >= totalLevelCount + 15) {
+		if (!ended && currentLevelIndex >= totalLevelCount + 14) {
 			ended = true;
 		}
 		if (ended && endCreature != null && endCreature.position.y <= -30f) {
 			endCreature.position = 
 				endCreature.position + new Vector3(0,0.1f,0);
+			if (!endDialoguePlayed && endCreature.position.y >= -30f && 
+			dialogueHandler != null && gameManager != null) {
+				endDialoguePlayed = true;
+				if (gameManager.GetAllTrashCollected()) {
+					dialogueHandler.AddDialogue(
+						"", 2f, true);
+					dialogueHandler.AddDialogue(
+						"Human! Thou hast done well.", 4f, false);
+					dialogueHandler.AddDialogue(
+						"Come, let us merge as one.", 4f, false);
+					dialogueHandler.AddDialogue(
+						"Together, we shalt cleanse the ocean of this filth!", 4f, false);
+					gameManager.PlayEndingGood(15);
+				}
+				else {
+					dialogueHandler.AddDialogue(
+						"", 2f, true);
+					dialogueHandler.AddDialogue(
+						"Such a disappointment.", 4f, false);
+					dialogueHandler.AddDialogue(
+						"Thou hast failed to cleanse us.", 4f, false);
+					dialogueHandler.AddDialogue(
+						"Begone, foolish mortal.", 4f, false);
+					gameManager.PlayEndingBad(15);
+				}
+			}
 		}
 	}
 }
