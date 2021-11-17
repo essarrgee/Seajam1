@@ -38,6 +38,8 @@ public class Trash : MonoBehaviour
 			GameObject randomModel = 
 				trashModelRandomList[Random.Range(0,trashModelRandomList.Count)];
 			if (randomModel != null) {
+				randomModel.transform.eulerAngles = randomModel.transform.eulerAngles 
+					+ new Vector3(0,Random.Range(0f,360f),0);
 				randomModel.SetActive(true);
 			}
 		}

@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
 	public virtual void Damage()
 	{
 		if (stunTime <= 0) {
-			stunTime = 2f;
+			stunTime = 1.1f;
 			if (cameraAnimator != null) {
 				cameraAnimator.SetTrigger("Damage");
 			}
