@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 	public GameObject endCutsceneGood;
 	public GameObject endCutsceneBad;
 	public Animator trashDisplayAnimator;
+	protected RectTransform trashDisplayTransform;
 	public TextMeshProUGUI trashDisplay;
 	protected Animator endCutsceneGoodAnimator;
 	protected Animator endCutsceneBadAnimator;
@@ -21,6 +22,10 @@ public class GameManager : MonoBehaviour
 	{
 		showTrash = 0;
 		trashCollected = 0;
+		
+		if (trashDisplayAnimator != null) {
+			trashDisplayTransform = trashDisplayAnimator.GetComponent<RectTransform>();
+		}
 		
 		if (endCutsceneGood != null) {
 			endCutsceneGoodAnimator = endCutsceneGood.GetComponent<Animator>();
@@ -42,6 +47,14 @@ public class GameManager : MonoBehaviour
 			trashDisplay.text = 
 				trashCollected.ToString() + "/" + totalTrashCount.ToString();
 		}
+		
+		// Instant show
+		if (Time.timeScale == 0) {
+			ShowTrash(true);
+		}
+		else {
+			ShowTrash(false);
+		}
 	}
 	
 	public virtual void CollectTrash()
@@ -54,6 +67,16 @@ public class GameManager : MonoBehaviour
 	public virtual void ShowTrash()
 	{
 		showTrash = Mathf.Max(showTrash, 0.5f);
+	}
+	
+	public virtual void ShowTrash(bool instant)
+	{
+		if (trashDisplayTransform != null && trashDisplayAnimator != null) {
+			trashDisplayAnimator.enabled = !instant;
+			if (instant) {
+				trashDisplayTransform.anchoredPosition = new Vector2(3.5f,3.5f);
+			}
+		}
 	}
 	
 	public virtual void SetTotalTrashCount(int total)

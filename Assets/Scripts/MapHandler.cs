@@ -127,7 +127,7 @@ public class MapHandler : MonoBehaviour
 	protected virtual void Start()
 	{
 		if (dialogueHandler != null) {
-			dialogueHandler.AddDialogue("WASD/Arrow Keys - Move\nSpacebar - Show Score", 
+			dialogueHandler.AddDialogue("WASD/Arrow Keys - Move\nLeft Shift - Show Score", 
 				5f, true);
 		}
 	}

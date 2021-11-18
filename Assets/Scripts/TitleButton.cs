@@ -12,6 +12,9 @@ public abstract class TitleButton : MonoBehaviour
 	public Animator cameraAnimator;
 	public Animator fadeAnimator;
 	
+	protected GameObject playerObject;
+	protected Player player;
+	
 	protected TextMeshProUGUI textDisplay;
 	protected string initialText;
 	
@@ -19,6 +22,11 @@ public abstract class TitleButton : MonoBehaviour
 	
 	protected virtual void Awake()
 	{
+		playerObject = GameObject.FindWithTag("Player");
+		if (playerObject != null) {
+			player = playerObject.GetComponent<Player>();
+		}
+		
 		textDisplay = GetComponent<TextMeshProUGUI>();
 		if (textDisplay != null) {
 			initialText = textDisplay.text;

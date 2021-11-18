@@ -7,11 +7,15 @@ public class TitleManager : MonoBehaviour
 	
 	protected Vector2 inputDirection;
 	protected bool inputConfirm;
+	protected bool inputPause;
 	
 	protected float moveCooldown;
 	protected float currentMoveCooldown;
 	
 	public TitleButton currentSelection;
+	
+	protected GameObject playerObject;
+	protected Player player;
 	
 	public bool lockInput = false;
 	protected float currentInputCooldown;
@@ -22,7 +26,12 @@ public class TitleManager : MonoBehaviour
 		inputConfirm = false;
 		moveCooldown = 0.4f;
 		currentMoveCooldown = moveCooldown;
-		currentInputCooldown = 2f;
+		currentInputCooldown = 0.1f;
+		
+		playerObject = GameObject.FindWithTag("Player");
+		if (playerObject != null) {
+			player = playerObject.GetComponent<Player>();
+		}
 	}
 	
 	protected virtual void Start()
@@ -34,22 +43,23 @@ public class TitleManager : MonoBehaviour
 	
 	protected virtual void Update()
 	{
-		if (!lockInput && currentInputCooldown <= 0) {
+		if (!lockInput) {
 			inputDirection.x = Input.GetAxisRaw("Horizontal");
 			inputDirection.y = Input.GetAxisRaw("Vertical");
 			inputConfirm = Input.GetKey(KeyCode.Space);
+			inputPause = Input.GetKeyDown(KeyCode.Escape);
 		}
 		else {
 			inputDirection = new Vector2(0,0);
 			inputConfirm = false;
+			inputPause = false;
 		}
 		
 		if (inputDirection.y <= 0.2f && inputDirection.y >= -0.2f) {
 			currentMoveCooldown = 0;
 		}
 		
-		if (currentSelection != null && currentMoveCooldown <= 0
-		&& currentInputCooldown <= 0) {
+		if (currentSelection != null && currentMoveCooldown <= 0) {
 			TitleButton previousSelection = null;
 			if (inputDirection.y > 0.2f) {
 				previousSelection = currentSelection;
@@ -71,9 +81,31 @@ public class TitleManager : MonoBehaviour
 			currentSelection.Confirm();
 		}
 		
+		if (inputPause && !lockInput) {
+			Pause(false);
+		}
+		
 		currentMoveCooldown = 
-			(currentMoveCooldown > 0) ? currentMoveCooldown - Time.deltaTime : 0;
+			(currentMoveCooldown > 0) ? currentMoveCooldown - Time.unscaledDeltaTime : 0;
 		currentInputCooldown = 
-			(currentInputCooldown > 0) ? currentInputCooldown - Time.deltaTime : 0;
+			(currentInputCooldown > 0) ? currentInputCooldown - Time.unscaledDeltaTime : 0;
+	}
+	
+	public virtual void Pause(bool state)
+	{
+		lockInput = !state;
+		Time.timeScale = state ? 0 : 1;
+		if (!state) {
+			gameObject.SetActive(false);
+		}
+		if (player != null) {
+			player.lockInput = state;
+		}
+	}
+	
+	public virtual void Pause(bool state, bool exiting)
+	{
+		lockInput = !state;
+		Time.timeScale = state ? 0 : 1;
 	}
 }

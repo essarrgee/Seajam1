@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 	protected Vector2 inputDirection;
 	protected Vector3 moveDirection;
 	protected bool inputInventory;
+	protected bool inputPause;
 	
 	public bool lockInput = false;
 	
@@ -22,6 +23,8 @@ public class Player : MonoBehaviour
 	protected GameManager gameManager;
 	
 	public Animator damageVignetteAnimator;
+	
+	public TitleManager pauseScreen;
 	
 	protected float stunTime;
 	
@@ -53,11 +56,13 @@ public class Player : MonoBehaviour
 		if (!lockInput) {
 			inputDirection.x = Input.GetAxisRaw("Horizontal");
 			inputDirection.y = Input.GetAxisRaw("Vertical");
-			inputInventory = Input.GetKey(KeyCode.Space);
+			inputInventory = Input.GetKey(KeyCode.LeftShift);
+			inputPause = Input.GetKeyDown(KeyCode.Escape);
 		}
 		else {
 			inputDirection = new Vector2(0,0);
 			inputInventory = false;
+			inputPause = false;
 		}
 		
 		stunTime = (stunTime > 0) ? stunTime - Time.deltaTime : 0;
@@ -73,14 +78,20 @@ public class Player : MonoBehaviour
 			}
 		}
 		
+		if (inputPause && pauseScreen != null && !lockInput) {
+			lockInput = true;
+			pauseScreen.gameObject.SetActive(true);
+			pauseScreen.Pause(true);
+		}
+		
+		if (gameManager != null && inputInventory) {
+			gameManager.ShowTrash();
+		}
+		
 	}
 	
 	protected virtual void FixedUpdate()
 	{
-		if (inputInventory && gameManager != null) {
-			gameManager.ShowTrash();
-		}
-		
 		moveDirection = new Vector3(inputDirection.x,0,inputDirection.y);
 		
 		Vector3 newSpeed = moveDirection.normalized;

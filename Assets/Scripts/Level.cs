@@ -18,19 +18,21 @@ public class Level : MonoBehaviour
 	protected List<int> hazardSpawnAngleList;
 	
 	
-	protected virtual void Awake()
+	protected virtual void Start()
 	{
-		hazardAllList = new List<Transform>();
-		for (int i=0; i<transform.Find("Hitbox").childCount; i++) {
-			hazardAllList.Add(transform.Find("Hitbox").GetChild(i));
+		if (hazardAllList == null) {
+			hazardAllList = new List<Transform>();
+			for (int i=0; i<transform.Find("Hitbox").childCount; i++) {
+				hazardAllList.Add(transform.Find("Hitbox").GetChild(i));
+			}
+			hazardCollectiveList = new List<List<Transform>>();
+			hazardCollectiveList.Add(hazardListLevel1);
+			hazardCollectiveList.Add(hazardListLevel2);
+			hazardCollectiveList.Add(hazardListLevel3);
+			hazardCollectiveList.Add(hazardListLevel4);
+			hazardCollectiveList.Add(hazardListLevel5);
+			hazardCollectiveList.Add(hazardListLevel6);
 		}
-		hazardCollectiveList = new List<List<Transform>>();
-		hazardCollectiveList.Add(hazardListLevel1);
-		hazardCollectiveList.Add(hazardListLevel2);
-		hazardCollectiveList.Add(hazardListLevel3);
-		hazardCollectiveList.Add(hazardListLevel4);
-		hazardCollectiveList.Add(hazardListLevel5);
-		hazardCollectiveList.Add(hazardListLevel6);
 	}
 	
 	public virtual void Respawn(bool hasTrash, int currentLevelIndex, int totalLevelCount)
@@ -52,7 +54,11 @@ public class Level : MonoBehaviour
 	
 	protected virtual void GenerateHazards(int spawnAngle, bool hasTrash, 
 	int currentLevelIndex, float levelRatio)
-	{
+	{	
+		// Needs to call since MapHandler has priority and
+		// will call Respawn() on this before this gets to call Start()/Awake()
+		Start();
+		
 		// Initialize all child hazards
 		for (int i=0; i<hazardAllList.Count; i++) {
 			hazardAllList[i].gameObject.SetActive(false);
