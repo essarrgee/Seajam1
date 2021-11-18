@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 	
     protected virtual void Awake()
 	{
-		showTrash = 5;
+		showTrash = 0;
 		trashCollected = 0;
 		
 		if (endCutsceneGood != null) {
@@ -50,6 +51,11 @@ public class GameManager : MonoBehaviour
 		// print(trashCollected);
 	}
 	
+	public virtual void ShowTrash()
+	{
+		showTrash = Mathf.Max(showTrash, 0.5f);
+	}
+	
 	public virtual void SetTotalTrashCount(int total)
 	{
 		this.totalTrashCount = total;
@@ -77,6 +83,15 @@ public class GameManager : MonoBehaviour
 		if (animator != null) {
 			animator.SetTrigger("Play");
 		}
+		
+		StartCoroutine(EndScene());
+	}
+	
+	protected virtual IEnumerator EndScene()
+	{
+		yield return new WaitForSeconds(3.5f);
+		
+		SceneManager.LoadScene("Title");
 	}
 	
 }

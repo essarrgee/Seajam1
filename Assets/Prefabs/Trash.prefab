@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 637557775359050991}
   - component: {fileID: 5918754823448299001}
   - component: {fileID: 7367913007021160025}
+  - component: {fileID: 7644354718061872587}
   m_Layer: 0
   m_Name: Trash
   m_TagString: Untagged
@@ -70,6 +71,25 @@ MonoBehaviour:
   - {fileID: 3501787149553520784}
   - {fileID: 8446565449461221253}
   - {fileID: 4824223552384220954}
+--- !u!95 &7644354718061872587
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056311719842714397}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d21db7417411fee468c517916dedaa8a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6459798951047183239
 GameObject:
   m_ObjectHideFlags: 0

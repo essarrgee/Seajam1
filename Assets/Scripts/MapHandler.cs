@@ -31,11 +31,13 @@ public class MapHandler : MonoBehaviour
 	
 	protected bool ended;
 	protected bool endDialoguePlayed;
+	protected bool merging;
 	
 	protected virtual void Awake()
 	{
 		ended = false;
 		endDialoguePlayed = false;
+		merging = false;
 		
 		fog = RenderSettings.fogColor;
 		currentFog = fog;
@@ -122,6 +124,14 @@ public class MapHandler : MonoBehaviour
 		}
 	}
 	
+	protected virtual void Start()
+	{
+		if (dialogueHandler != null) {
+			dialogueHandler.AddDialogue("WASD/Arrow Keys - Move\nSpacebar - Show Score", 
+				5f, true);
+		}
+	}
+	
 	protected virtual IEnumerator StartAnimation(float time, Animator animator)
 	{
 		yield return new WaitForSeconds(time);
@@ -195,37 +205,50 @@ public class MapHandler : MonoBehaviour
 		if (!ended && currentLevelIndex >= totalLevelCount + 14) {
 			ended = true;
 		}
-		if (ended && endCreature != null && endCreature.position.y <= -30f) {
-			endCreature.position = 
-				endCreature.position + new Vector3(0,0.1f,0);
-			if (!endDialoguePlayed && endCreature.position.y >= -30f && 
-			dialogueHandler != null && gameManager != null) {
-				endDialoguePlayed = true;
-				if (gameManager.GetAllTrashCollected()) {
-					dialogueHandler.AddDialogue(
-						"", 2f, true);
-					dialogueHandler.AddDialogue(
-						"Human, you have done well.", 4f, false);
-					dialogueHandler.AddDialogue(
-						"Our ocean has long been polluted by this awful substance.", 4f, false);
-					dialogueHandler.AddDialogue(
-						"Let us merge as one.", 4f, false);
-					dialogueHandler.AddDialogue(
-						"Toegther, we will rid the ocean of this filth.", 4f, false);
-					gameManager.PlayEndingGood(19);
+		if (ended && endCreature != null) {
+			if (endCreature.position.y <= -30f || merging) {
+				if (endCreature.position.y >= -5f)  {
+					merging = false;
 				}
-				else {
-					dialogueHandler.AddDialogue(
-						"", 2f, true);
-					dialogueHandler.AddDialogue(
-						"Such a disappointment.", 4f, false);
-					dialogueHandler.AddDialogue(
-						"You have failed to cleanse us.", 4f, false);
-					dialogueHandler.AddDialogue(
-						"Begone.", 4f, false);
-					gameManager.PlayEndingBad(15);
+				endCreature.position = 
+					endCreature.position + new Vector3(0,0.1f,0);
+				if (!endDialoguePlayed && endCreature.position.y >= -30f && 
+				dialogueHandler != null && gameManager != null) {
+					endDialoguePlayed = true;
+					if (gameManager.GetAllTrashCollected()) {
+						dialogueHandler.AddDialogue(
+							"", 2f, true);
+						dialogueHandler.AddDialogue(
+							"Human, you have done well.", 4f, false);
+						dialogueHandler.AddDialogue(
+							"For far too long, our ocean has long been polluted by this awful substance.", 6f, false);
+						dialogueHandler.AddDialogue(
+							"Let us merge as one.", 4f, false);
+						dialogueHandler.AddDialogue(
+							"Together, we will rid the ocean of this filth.", 4f, false);
+						gameManager.PlayEndingGood(21);
+						StartCoroutine(EndCreatureMerge(20.5f));
+					}
+					else {
+						dialogueHandler.AddDialogue(
+							"", 2f, true);
+						dialogueHandler.AddDialogue(
+							"Such a disappointment.", 4f, false);
+						dialogueHandler.AddDialogue(
+							"You have failed to cleanse us.", 4f, false);
+						dialogueHandler.AddDialogue(
+							"Begone.", 4f, false);
+						gameManager.PlayEndingBad(15);
+					}
 				}
 			}
 		}
+	}
+	
+	protected virtual IEnumerator EndCreatureMerge(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		
+		merging = true;
 	}
 }
