@@ -37,7 +37,7 @@ public class AudioHandler : MonoBehaviour
 		}
 	}
 	
-	public virtual void FadeAudio(float time, int increment)
+	public virtual void FadeAudio(int direction, float time, int increment)
 	{
 		Dictionary<string, AudioSource>.ValueCollection audioValues = 
 			audioMap.Values;
@@ -45,7 +45,11 @@ public class AudioHandler : MonoBehaviour
 		
 		for (int i=0; i<increment; i++) {
 			StartCoroutine(
-				SetVolume(timeIncrement*i, 1-((float)(i+1)/(float)increment), audioValues)
+				SetVolume(timeIncrement*i, 
+					(direction == -1) ? 
+						1-((float)(i+1)/(float)increment) : 
+						((float)(i+1)/(float)increment), 
+					audioValues)
 			);
 		}
 		

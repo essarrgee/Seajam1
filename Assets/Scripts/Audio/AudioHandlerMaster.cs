@@ -11,10 +11,10 @@ public class AudioHandlerMaster : MonoBehaviour
 		
 	}
 	
-	public virtual void FadeAllAudio(float time, int increment)
+	public virtual void FadeAllAudio(int direction, float time, int increment)
 	{
 		for (int i=0; i<audioHandlerList.Count; i++) {
-			audioHandlerList[i].FadeAudio(time, increment);
+			audioHandlerList[i].FadeAudio(direction, time, increment);
 		}
 	}
 }

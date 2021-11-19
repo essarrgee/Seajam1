@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 	protected int totalTrashCount;
 	public int trashCollected;
 	
+	public AudioHandlerMaster audioMaster;
+	
     protected virtual void Awake()
 	{
 		showTrash = 0;
@@ -33,6 +35,13 @@ public class GameManager : MonoBehaviour
 		
 		if (endCutsceneBad != null) {
 			endCutsceneBadAnimator = endCutsceneBad.GetComponent<Animator>();
+		}
+	}
+	
+	protected virtual void Start()
+	{
+		if (audioMaster != null) {
+			audioMaster.FadeAllAudio(1, 3f, 10);
 		}
 	}
 	

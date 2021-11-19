@@ -21,7 +21,7 @@ public class TitleButtonStart : TitleButton
 				audioManager.Play("MenuConfirm");
 			}
 			if (audioMaster != null) {
-				audioMaster.FadeAllAudio(2.5f, 10);
+				audioMaster.FadeAllAudio(-1, 2.5f, 10);
 			}
 			StartCoroutine(ConfirmLate());
 		}
