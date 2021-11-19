@@ -17,13 +17,19 @@ public class TitleButtonStart : TitleButton
 			if (fadeAnimator != null) {
 				fadeAnimator.SetTrigger("FadeIn");
 			}
+			if (audioManager != null) {
+				audioManager.Play("MenuConfirm");
+			}
+			if (audioMaster != null) {
+				audioMaster.FadeAllAudio(2.5f, 10);
+			}
 			StartCoroutine(ConfirmLate());
 		}
 	}
 	
 	protected override IEnumerator ConfirmLate()
 	{
-		yield return new WaitForSeconds(1.7f);
+		yield return new WaitForSeconds(3f);
 		
 		SceneManager.LoadScene("Main");
 	}

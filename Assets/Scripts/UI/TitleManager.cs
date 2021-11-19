@@ -14,6 +14,8 @@ public class TitleManager : MonoBehaviour
 	
 	public TitleButton currentSelection;
 	
+	protected AudioHandler audioManager;
+	
 	protected GameObject playerObject;
 	protected Player player;
 	
@@ -32,6 +34,8 @@ public class TitleManager : MonoBehaviour
 		if (playerObject != null) {
 			player = playerObject.GetComponent<Player>();
 		}
+		
+		audioManager = GetComponent<AudioHandler>();
 	}
 	
 	protected virtual void Start()
@@ -73,6 +77,9 @@ public class TitleManager : MonoBehaviour
 				currentMoveCooldown = moveCooldown;
 				previousSelection.Select(false);
 				currentSelection.Select(true);
+				if (audioManager != null) {
+					audioManager.Play("MenuSelect");
+				}
 			}
 		}
 		

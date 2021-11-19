@@ -12,11 +12,15 @@ public abstract class TitleButton : MonoBehaviour
 	public Animator cameraAnimator;
 	public Animator fadeAnimator;
 	
+	public AudioHandlerMaster audioMaster;
+	
 	protected GameObject playerObject;
 	protected Player player;
 	
 	protected TextMeshProUGUI textDisplay;
 	protected string initialText;
+	
+	protected AudioHandler audioManager;
 	
 	protected bool confirmed;
 	
@@ -31,6 +35,8 @@ public abstract class TitleButton : MonoBehaviour
 		if (textDisplay != null) {
 			initialText = textDisplay.text;
 		}
+		
+		audioManager = GetComponent<AudioHandler>();
 		
 		confirmed = false;
 	}

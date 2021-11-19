@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
 	
 	protected virtual IEnumerator EndScene()
 	{
-		yield return new WaitForSeconds(3.5f);
+		yield return new WaitForSeconds(5f);
 		
 		SceneManager.LoadScene("Title");
 	}
