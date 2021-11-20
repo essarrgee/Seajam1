@@ -12,11 +12,20 @@ public class TitleButtonPauseExitTitle : TitleButton
 	{
 		if (!confirmed) {
 			confirmed = true;
+			if (title != null) {
+				title.lockInput = true;
+			}
 			if (pauseScreen != null) {
 				pauseScreen.Pause(false, true);
 			}
 			if (fadeAnimator != null) {
 				fadeAnimator.SetTrigger("FadeIn");
+			}
+			if (audioManager != null) {
+				audioManager.Play("MenuConfirm");
+			}
+			if (audioMaster != null) {
+				audioMaster.FadeAllAudio(-1, 1.5f, 10);
 			}
 			StartCoroutine(ConfirmLate());
 		}

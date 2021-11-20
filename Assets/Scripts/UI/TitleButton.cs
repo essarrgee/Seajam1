@@ -12,7 +12,10 @@ public abstract class TitleButton : MonoBehaviour
 	public Animator cameraAnimator;
 	public Animator fadeAnimator;
 	
+	public TitleManager title;
+	
 	public AudioHandlerMaster audioMaster;
+	protected AudioHandler audioManager;
 	
 	protected GameObject playerObject;
 	protected Player player;
@@ -20,9 +23,8 @@ public abstract class TitleButton : MonoBehaviour
 	protected TextMeshProUGUI textDisplay;
 	protected string initialText;
 	
-	protected AudioHandler audioManager;
-	
 	protected bool confirmed;
+	
 	
 	protected virtual void Awake()
 	{

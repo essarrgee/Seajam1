@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
 	
 	public TitleManager pauseScreen;
 	
+	protected AudioHandler audioManager;
+	
 	protected float stunTime;
 	
 	
@@ -48,6 +50,8 @@ public class Player : MonoBehaviour
 			gameManager = gameManagerObject.GetComponent<GameManager>();
 		}
 		
+		audioManager = GetComponent<AudioHandler>();
+		
 		stunTime = 0f;
 	}
 	
@@ -56,8 +60,10 @@ public class Player : MonoBehaviour
 		if (!lockInput) {
 			inputDirection.x = Input.GetAxisRaw("Horizontal");
 			inputDirection.y = Input.GetAxisRaw("Vertical");
-			inputInventory = Input.GetKey(KeyCode.LeftShift);
-			inputPause = Input.GetKeyDown(KeyCode.Escape);
+			inputInventory = Input.GetButton("Fire2");
+				// Input.GetKey(KeyCode.LeftShift);
+			inputPause = Input.GetButtonDown("Submit");
+				// Input.GetKeyDown(KeyCode.Escape);
 		}
 		else {
 			inputDirection = new Vector2(0,0);
@@ -97,7 +103,7 @@ public class Player : MonoBehaviour
 		Vector3 newSpeed = moveDirection.normalized;
 		Vector3 totalSpeed = 
 			new Vector3(newSpeed.x, 0, newSpeed.z)*walkSpeed*
-				(stunTime <= 0.2f ? 1 : 0);
+				(stunTime <= 0.1f ? 1 : 0);
 		
 		if (rb != null) {
 			rb.AddForce(totalSpeed, ForceMode.Impulse);
@@ -113,6 +119,9 @@ public class Player : MonoBehaviour
 			}
 			if (damageVignetteAnimator != null) {
 				damageVignetteAnimator.SetTrigger("Damage");
+			}
+			if (audioManager != null) {
+				audioManager.Play("Impact");
 			}
 		}
 	}

@@ -9,6 +9,9 @@ public class TitleButtonPauseResume : TitleButton
 
     public override void Confirm()
 	{
+		if (title != null) {
+			title.lockInput = true;
+		}
 		if (pauseScreen != null) {
 			pauseScreen.Pause(false);
 		}

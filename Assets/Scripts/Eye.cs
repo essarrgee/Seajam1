@@ -38,7 +38,14 @@ public class Eye : MonoBehaviour
 		(playerObject.transform.position - model.position).magnitude <= openRange
 		&& gameObject.activeSelf) {
 			opened = true;
-			animator.SetTrigger("Open");
+			StartCoroutine(Open(Random.Range(0f,0.4f)));
 		}
+	}
+	
+	protected virtual IEnumerator Open(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		
+		animator.SetTrigger("Open");
 	}
 }

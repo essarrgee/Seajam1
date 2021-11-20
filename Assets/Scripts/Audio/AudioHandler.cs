@@ -20,11 +20,13 @@ public class AudioHandler : MonoBehaviour
 		if (audioContainerObject != null) {
 			for (int i=0; i < audioContainerObject.childCount; i++) {
 				Transform audioObject = audioContainerObject.GetChild(i);
-				AudioSource audioSource = 
-					audioObject.GetComponent<AudioSource>();
-				if (audioSource != null) {
-					audioMap.Add(audioObject.name, audioSource);
-					audioInitialVolumeMap.Add(audioSource, audioSource.volume);
+				if (audioObject.gameObject.activeSelf) {
+					AudioSource audioSource = 
+						audioObject.GetComponent<AudioSource>();
+					if (audioSource != null) {
+						audioMap.Add(audioObject.name, audioSource);
+						audioInitialVolumeMap.Add(audioSource, audioSource.volume);
+					}
 				}
 			}
 		}
@@ -32,8 +34,26 @@ public class AudioHandler : MonoBehaviour
 	
 	public virtual void Play(string audioName)
 	{
-		if (audioMap.ContainsKey(audioName)) {
+		if (gameObject.activeSelf && gameObject.activeInHierarchy && 
+		audioMap.ContainsKey(audioName)) {
 			audioMap[audioName].Play(0);
+		}
+	}
+	
+	// Override
+	public virtual void Play(string audioName, Vector3 position)
+	{
+		if (gameObject.activeSelf && gameObject.activeInHierarchy && 
+		audioMap.ContainsKey(audioName)) {
+			audioMap[audioName].transform.localPosition = position;
+			audioMap[audioName].Play(0);
+		}
+	}
+	
+	public virtual void Stop(string audioName)
+	{
+		if (audioMap.ContainsKey(audioName)) {
+			audioMap[audioName].Stop();
 		}
 	}
 	

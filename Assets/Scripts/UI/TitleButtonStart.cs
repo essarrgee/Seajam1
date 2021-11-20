@@ -11,6 +11,9 @@ public class TitleButtonStart : TitleButton
 	{
 		if (!confirmed) {
 			confirmed = true;
+			if (title != null) {
+				title.lockInput = true;
+			}
 			if (cameraAnimator != null) {
 				cameraAnimator.SetTrigger("ZoomIn");
 			}
@@ -19,6 +22,7 @@ public class TitleButtonStart : TitleButton
 			}
 			if (audioManager != null) {
 				audioManager.Play("MenuConfirm");
+				audioManager.Play("Swish");
 			}
 			if (audioMaster != null) {
 				audioMaster.FadeAllAudio(-1, 2.5f, 10);

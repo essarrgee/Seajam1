@@ -19,6 +19,8 @@ public class TitleManager : MonoBehaviour
 	protected GameObject playerObject;
 	protected Player player;
 	
+	public bool canPause = false;
+	
 	public bool lockInput = false;
 	protected float currentInputCooldown;
 	
@@ -50,8 +52,10 @@ public class TitleManager : MonoBehaviour
 		if (!lockInput) {
 			inputDirection.x = Input.GetAxisRaw("Horizontal");
 			inputDirection.y = Input.GetAxisRaw("Vertical");
-			inputConfirm = Input.GetKey(KeyCode.Space);
-			inputPause = Input.GetKeyDown(KeyCode.Escape);
+			inputConfirm = Input.GetButtonDown("Fire1");
+				// Input.GetKeyDown(KeyCode.Space);
+			inputPause = Input.GetButtonDown("Submit");
+				// Input.GetKeyDown(KeyCode.Escape) && canPause;
 		}
 		else {
 			inputDirection = new Vector2(0,0);
@@ -84,7 +88,6 @@ public class TitleManager : MonoBehaviour
 		}
 		
 		if (inputConfirm && currentSelection && !lockInput && currentInputCooldown <= 0) {
-			lockInput = true;
 			currentSelection.Confirm();
 		}
 		

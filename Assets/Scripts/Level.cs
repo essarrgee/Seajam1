@@ -48,7 +48,7 @@ public class Level : MonoBehaviour
 			trash.gameObject.SetActive(hasTrash);
 			trash.collected = false;
 			trash.transform.localPosition = 
-				new Vector3(0,Random.Range(-3f,3f),Random.Range(0.5f,3f));
+				new Vector3(0,Random.Range(-3f,3f),Random.Range(0.5f,2f));
 		}
 	}
 	

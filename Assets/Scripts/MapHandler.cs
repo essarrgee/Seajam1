@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MapHandler : MonoBehaviour
 {
+	public AudioHandler audioManager;
 	public Transform endCreature;
+	public AudioHandler creatureAudioManager;
 	
 	public float speed = 1f;
 	[Tooltip("Read Only, defaults to # of children in transform")]
@@ -32,6 +34,8 @@ public class MapHandler : MonoBehaviour
 	protected bool ended;
 	protected bool endDialoguePlayed;
 	protected bool merging;
+	
+	protected List<string> randomSoundList;
 	
 	protected virtual void Awake()
 	{
@@ -113,8 +117,8 @@ public class MapHandler : MonoBehaviour
 			gameManager = gameManagerObject.GetComponent<GameManager>();
 		}
 		if (gameManager != null) {
-			gameManager.SetTotalTrashCount(totalTrashCount);
-			print(totalTrashCount);
+			gameManager.SetTotalTrashCount(totalTrashCount-1);
+			print(totalTrashCount-1);
 		}
 		
 		// DialogueHandler
@@ -122,13 +126,25 @@ public class MapHandler : MonoBehaviour
 		if (dialogueHandlerObject != null) {
 			dialogueHandler = dialogueHandlerObject.GetComponent<DialogueHandler>();
 		}
+		
+		// Set Random Sound Names
+		randomSoundList = new List<string>();
+		randomSoundList.Add("GrowlRandom");
+		randomSoundList.Add("GrowlRandom");
+		randomSoundList.Add("GrowlRandom");
+		randomSoundList.Add("GrowlRandom2");
+		randomSoundList.Add("GrowlRandom");
+		randomSoundList.Add("GrowlRandom2");
+		randomSoundList.Add("GrowlRandom2");
+		randomSoundList.Add("GrowlRandom");
+		
 	}
 	
 	protected virtual void Start()
 	{
 		if (dialogueHandler != null) {
 			dialogueHandler.AddDialogue("WASD/Arrow Keys - Move\nLeft Shift - Show Score", 
-				5f, true);
+				6f, true);
 		}
 	}
 	
@@ -168,29 +184,31 @@ public class MapHandler : MonoBehaviour
 		
 		if (tubeQueue.Count > 0 && tubeQueue.Peek().transform.position.y >= 10f) {
 			Level firstTube = tubeQueue.Dequeue();
-			//if (currentLevelIndex <= totalLevelCount + 50) {	
-				tubeQueue.Enqueue(firstTube);
-				firstTube.transform.position = 
-					new Vector3(0,(tubeQueue.Count*-10f)+10f,0);
-				//if (currentLevelCount > totalLevelCount + 15) {
-				firstTube.gameObject.SetActive(currentLevelCount <= totalLevelCount + 15);
-				//}
-				if ((currentLevelCount+1) < levelInfoList.Count) {
-					firstTube.Respawn(
-						levelInfoList[currentLevelCount+1]["hasTrash"], 
-						currentLevelIndex, totalLevelCount);
-				}
-				else {
-					firstTube.Respawn(false, currentLevelIndex, totalLevelCount);
-				}
-				currentLevelCount++;
+			tubeQueue.Enqueue(firstTube);
+			firstTube.transform.position = 
+				new Vector3(0,(tubeQueue.Count*-10f)+10f,0);
+			//if (currentLevelCount > totalLevelCount + 15) {
+			firstTube.gameObject.SetActive(currentLevelCount <= totalLevelCount + 15);
 			//}
-			//else {
-			//	firstTube.transform.position = new Vector3(0,100,0);
-			//}
+			if ((currentLevelCount+1) < levelInfoList.Count) {
+				firstTube.Respawn(
+					levelInfoList[currentLevelCount+1]["hasTrash"], 
+					currentLevelIndex, totalLevelCount);
+			}
+			else {
+				firstTube.Respawn(false, currentLevelIndex, totalLevelCount);
+			}
+			currentLevelCount++;
 			currentLevelIndex = (currentLevelIndex < 999) ? 
 				currentLevelIndex + 1 : 999;
-			
+			int playSoundRandom = Random.Range(0,100);
+			if (playSoundRandom >= 60 && audioManager != null && randomSoundList.Count > 0) {
+				int soundIndex = Random.Range(0,randomSoundList.Count);
+				audioManager.Play(randomSoundList[soundIndex], 
+					new Vector3(Random.Range(-10f,10f),
+						Random.Range(-15f,15f),Random.Range(-10f,10f)));
+				randomSoundList.RemoveAt(soundIndex);
+			}
 		}
 			
 		if (changeSpeedMap.ContainsKey(currentLevelIndex)) {
@@ -199,11 +217,17 @@ public class MapHandler : MonoBehaviour
 			if (dialogueHandler != null && speed > lastSpeed) {
 				dialogueHandler.AddDialogue(
 					"Something pulls you in further...", 3f, true);
+				if (audioManager != null) {
+					audioManager.Play("UnderwaterSwish");
+				}
 			}
 		}
 		
 		if (!ended && currentLevelIndex >= totalLevelCount + 14) {
 			ended = true;
+			if (creatureAudioManager != null) {
+				creatureAudioManager.Play("Growl");
+			}
 		}
 		if (ended && endCreature != null) {
 			if (endCreature.position.y <= -30f || merging) {
@@ -221,13 +245,17 @@ public class MapHandler : MonoBehaviour
 						dialogueHandler.AddDialogue(
 							"Human, you have done well.", 4f, false);
 						dialogueHandler.AddDialogue(
-							"For far too long, our ocean has long been polluted by this awful substance.", 6f, false);
+							"For far too long, our ocean has been polluted by this awful substance.", 6f, false);
 						dialogueHandler.AddDialogue(
-							"Let us merge as one.", 4f, false);
+							"This changes now.", 4f, false);
 						dialogueHandler.AddDialogue(
-							"Together, we will rid the ocean of this filth.", 4f, false);
-						gameManager.PlayEndingGood(21);
-						StartCoroutine(EndCreatureMerge(20.5f));
+							"Let us merge as one!", 4f, false);
+						dialogueHandler.AddDialogue(
+							"Together, we will rid the ocean of this filth.", 5f, false);
+						dialogueHandler.AddDialogue(
+							"Come to me...", 4f, false);
+						gameManager.PlayEndingGood(23);
+						StartCoroutine(EndCreatureMerge(22.5f));
 					}
 					else {
 						dialogueHandler.AddDialogue(
@@ -237,7 +265,7 @@ public class MapHandler : MonoBehaviour
 						dialogueHandler.AddDialogue(
 							"You have failed to cleanse us.", 4f, false);
 						dialogueHandler.AddDialogue(
-							"Begone.", 4f, false);
+							"Begone with you.", 4f, false);
 						gameManager.PlayEndingBad(15);
 					}
 				}

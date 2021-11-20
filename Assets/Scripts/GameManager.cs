@@ -18,12 +18,23 @@ public class GameManager : MonoBehaviour
 	protected int totalTrashCount;
 	public int trashCollected;
 	
+	protected GameObject playerObject;
+	protected Player player;
+	
+	protected AudioHandler audioManager;
 	public AudioHandlerMaster audioMaster;
 	
     protected virtual void Awake()
 	{
 		showTrash = 0;
 		trashCollected = 0;
+		
+		audioManager = GetComponent<AudioHandler>();
+		
+		playerObject = GameObject.FindWithTag("Player");
+		if (playerObject != null) {
+			player = playerObject.GetComponent<Player>();
+		}
 		
 		if (trashDisplayAnimator != null) {
 			trashDisplayTransform = trashDisplayAnimator.GetComponent<RectTransform>();
@@ -41,7 +52,7 @@ public class GameManager : MonoBehaviour
 	protected virtual void Start()
 	{
 		if (audioMaster != null) {
-			audioMaster.FadeAllAudio(1, 3f, 10);
+			audioMaster.FadeAllAudio(1, 1f, 10);
 		}
 	}
 	
@@ -70,7 +81,9 @@ public class GameManager : MonoBehaviour
 	{
 		trashCollected++;
 		showTrash = 3f;
-		// print(trashCollected);
+		if (audioManager != null) {
+			audioManager.Play("PickUp");
+		}
 	}
 	
 	public virtual void ShowTrash()
@@ -114,6 +127,12 @@ public class GameManager : MonoBehaviour
 		
 		if (animator != null) {
 			animator.SetTrigger("Play");
+		}
+		if (audioMaster != null) {
+			audioMaster.FadeAllAudio(-1, 4f, 20);
+		}
+		if (player != null) {
+			player.lockInput = true;
 		}
 		
 		StartCoroutine(EndScene());

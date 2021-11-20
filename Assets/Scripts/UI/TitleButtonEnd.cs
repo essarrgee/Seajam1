@@ -11,8 +11,17 @@ public class TitleButtonEnd : TitleButton
 	{
 		if (!confirmed) {
 			confirmed = true;
+			if (title != null) {
+				title.lockInput = true;
+			}
 			if (cameraAnimator != null) {
 				cameraAnimator.SetTrigger("ZoomOut");
+			}
+			if (fadeAnimator != null) {
+				fadeAnimator.SetTrigger("FadeIn");
+			}
+			if (audioManager != null) {
+				audioManager.Play("MenuConfirm");
 			}
 			StartCoroutine(ConfirmLate());
 		}
