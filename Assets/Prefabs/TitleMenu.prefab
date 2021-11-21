@@ -2114,8 +2114,9 @@ MonoBehaviour:
   downSelection: {fileID: 5039694536345037928}
   cameraAnimator: {fileID: 0}
   fadeAnimator: {fileID: 5039694537088607469}
-  title: {fileID: 0}
+  title: {fileID: 5039694536441800884}
   audioMaster: {fileID: 0}
+  quitDelay: 0.75
 --- !u!222 &5039694536670013093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2327,9 +2328,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<color=green>Sound Effects:</color>\n\nUnderwater Ambiance - YoloSwaggings\r
-    -https://freesound.org/people/YoloSwaggings/sounds/406623/\r\n\r\nTollBell -
-    daytripper\r -https://freesound.org/people/daytripper/sounds/73678/\r\n\r\nHeavyHeartbeat
+  m_text: "<color=green>Fonts:</color>\n\nTex Gyre Bonum - GUST e-foundry -https://www.1001fonts.com/tex-gyre-bonum-font.html\n\n<color=green>Sound
+    Effects:</color>\n\nUnderwater Ambiance - YoloSwaggings\r -https://freesound.org/people/YoloSwaggings/sounds/406623/\r\n\r\nTollBell
+    - daytripper\r -https://freesound.org/people/daytripper/sounds/73678/\r\n\r\nHeavyHeartbeat
     - MickBoere\r -https://freesound.org/people/MickBoere/sounds/276578/\r\n\r\nSlime
     27 - Archos\r -https://freesound.org/people/Archos/sounds/433840/\r\n\r\nUnderwater
     Impact - deleted_user_7709760\r -https://freesound.org/people/deleted_user_7709760/sounds/400793/\r\n\r\nunderwater

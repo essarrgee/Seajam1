@@ -91,7 +91,7 @@ public class TitleManager : MonoBehaviour
 			currentSelection.Confirm();
 		}
 		
-		if (inputPause && !lockInput) {
+		if (inputPause && !lockInput && player != null) {
 			Pause(false);
 		}
 		

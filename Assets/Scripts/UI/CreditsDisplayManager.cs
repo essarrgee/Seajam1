@@ -48,9 +48,9 @@ public class CreditsDisplayManager : MonoBehaviour
 			}
 			else if (inputDirection.y <= -0.2f) {
 				displayContents.localPosition = 
-					(displayContents.localPosition.y < 37) ?
+					(displayContents.localPosition.y < 42) ?
 					displayContents.localPosition + new Vector3(0,0.2f,0) :
-					new Vector3(0,37,0);
+					new Vector3(0,42,0);
 			}
 		}
 		

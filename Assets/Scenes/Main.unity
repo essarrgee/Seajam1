@@ -14010,6 +14010,7 @@ MonoBehaviour:
   downSelection: {fileID: 6991781587845692517}
   cameraAnimator: {fileID: 0}
   fadeAnimator: {fileID: 284119218}
+  title: {fileID: 0}
   audioMaster: {fileID: 0}
   pauseScreen: {fileID: 1162677008}
 --- !u!114 &1979191855
@@ -20584,6 +20585,7 @@ MonoBehaviour:
   downSelection: {fileID: 1979191854}
   cameraAnimator: {fileID: 0}
   fadeAnimator: {fileID: 284119218}
+  title: {fileID: 0}
   audioMaster: {fileID: 0}
   pauseScreen: {fileID: 1162677008}
 --- !u!114 &6991781586715506351
@@ -20765,7 +20767,10 @@ MonoBehaviour:
   downSelection: {fileID: 6991781586715506350}
   cameraAnimator: {fileID: 0}
   fadeAnimator: {fileID: 284119218}
+  title: {fileID: 1162677008}
   audioMaster: {fileID: 0}
+  quitDelay: 0.1
+  pauseScreen: {fileID: 1162677008}
 --- !u!1 &7068171624068655689
 GameObject:
   m_ObjectHideFlags: 0
